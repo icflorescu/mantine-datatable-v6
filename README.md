@@ -52,7 +52,7 @@ Visit [icflorescu.github.io/mantine-datatable-v6](https://icflorescu.github.io/m
 
 ## Quickstart
 
-Install the package and its dependencies:
+Install the package and its dependencies (Mantine v7 is not currently supported, so use v6.0.21):
 
 ```sh
 npm i @mantine/core@6 @mantine/hooks@6 @emotion/react mantine-datatable@6
