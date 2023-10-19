@@ -1,4 +1,4 @@
-# Mantine DataTable
+# Mantine DataTable V6
 
 ![Publish NPM & deploy docs workflow](https://github.com/icflorescu/mantine-datatable/actions/workflows/publish-and-deploy.yml/badge.svg)  
 [![NPM version][npm-image]][npm-url]
@@ -13,26 +13,26 @@
 ⚠️ Mantine DataTable V6 supports Mantine V6.  
 💡 Mantine V7 support is in the works, and I could really use your help to speed things up. Please consider [sponsoring my work](https://github.com/sponsors/icflorescu) 🙏
 
-The lightweight, dependency-free, "dark-theme aware" [**table component**](https://icflorescu.github.io/mantine-datatable/) for your Mantine UI data-rich applications, featuring asynchronous data loading support, pagination, intuitive Gmail-style additive batch rows selection, column sorting, custom cell data rendering, row context menu, row expansion, nesting, and more.
+The lightweight, dependency-free, "dark-theme aware" [**table component**](https://icflorescu.github.io/mantine-datatable-v6/) for your Mantine UI data-rich applications, featuring asynchronous data loading support, pagination, intuitive Gmail-style additive batch rows selection, column sorting, custom cell data rendering, row context menu, row expansion, nesting, and more.
 
-[![Mantine DataTable](https://user-images.githubusercontent.com/581999/189911698-369ba48e-65f0-4772-aad3-cb5e6d4cb59d.png)](https://icflorescu.github.io/mantine-datatable/)
+[![Mantine DataTable](https://user-images.githubusercontent.com/581999/189911698-369ba48e-65f0-4772-aad3-cb5e6d4cb59d.png)](https://icflorescu.github.io/mantine-datatable-v6/)
 
 ## Features
 
 - **Lightweight** - no external dependencies, [no bloat](https://bundlephobia.com/package/mantine-datatable)
 - **Dark theme aware** - works out of the box with [Mantine's dark theme](https://mantine.dev/guides/dark-theme/)
-- **[Fully customizable](https://icflorescu.github.io/mantine-datatable/examples/additional-styling)** - you can customize the look and feel of the table and its components
-- **[Asynchronous data loading](https://icflorescu.github.io/mantine-datatable/examples/asynchronous-data-loading)** - load data from a remote API endpoint and show a loading indicator while waiting for the response
-- **[Pagination](https://icflorescu.github.io/mantine-datatable/examples/pagination)** - split large data sets into pages
-- **[Column sorting](https://icflorescu.github.io/mantine-datatable/examples/sorting)** - sort data by one or more columns
-- **[Custom cell data rendering](https://icflorescu.github.io/mantine-datatable/examples/column-properties)** - render cell data using custom components
-- **[Row context menu](https://icflorescu.github.io/mantine-datatable/examples/row-context-menu)** - show a context menu when right-clicking on a row
-- **[Row expansion](https://icflorescu.github.io/mantine-datatable/examples/expanding-rows)** - expand a row to show additional details
-- **[Nesting](https://icflorescu.github.io/mantine-datatable/examples/nested-tables)** - nest tables to show hierarchical data
-- **[Additive batch rows selection](https://icflorescu.github.io/mantine-datatable/examples/records-selection)** - select or deselect ranges of rows using the Shift key
-- **[Automatically-scrollable](https://icflorescu.github.io/mantine-datatable/examples/scrollable-vs-auto-height)** - automatically scrollable or auto-height
-- **[AutoAnimate support](https://icflorescu.github.io/mantine-datatable/examples/using-with-auto-animate)** - animate row sorting, addition and removal
-- **More** - check out the [full documentation](https://icflorescu.github.io/mantine-datatable/)
+- **[Fully customizable](https://icflorescu.github.io/mantine-datatable-v6/examples/additional-styling)** - you can customize the look and feel of the table and its components
+- **[Asynchronous data loading](https://icflorescu.github.io/mantine-datatable-v6/examples/asynchronous-data-loading)** - load data from a remote API endpoint and show a loading indicator while waiting for the response
+- **[Pagination](https://icflorescu.github.io/mantine-datatable-v6/examples/pagination)** - split large data sets into pages
+- **[Column sorting](https://icflorescu.github.io/mantine-datatable-v6/examples/sorting)** - sort data by one or more columns
+- **[Custom cell data rendering](https://icflorescu.github.io/mantine-datatable-v6/examples/column-properties)** - render cell data using custom components
+- **[Row context menu](https://icflorescu.github.io/mantine-datatable-v6/examples/row-context-menu)** - show a context menu when right-clicking on a row
+- **[Row expansion](https://icflorescu.github.io/mantine-datatable-v6/examples/expanding-rows)** - expand a row to show additional details
+- **[Nesting](https://icflorescu.github.io/mantine-datatable-v6/examples/nested-tables)** - nest tables to show hierarchical data
+- **[Additive batch rows selection](https://icflorescu.github.io/mantine-datatable-v6/examples/records-selection)** - select or deselect ranges of rows using the Shift key
+- **[Automatically-scrollable](https://icflorescu.github.io/mantine-datatable-v6/examples/scrollable-vs-auto-height)** - automatically scrollable or auto-height
+- **[AutoAnimate support](https://icflorescu.github.io/mantine-datatable/examples-v6/using-with-auto-animate)** - animate row sorting, addition and removal
+- **More** - check out the [full documentation](https://icflorescu.github.io/mantine-datatable-v6/)
 
 ## Trusted by the community
 
@@ -48,14 +48,14 @@ If you're using [Mantine DataTable](https://icflorescu.github.io/mantine-datatab
 
 ## Full documentation and examples
 
-Visit [icflorescu.github.io/mantine-datatable](https://icflorescu.github.io/mantine-datatable/) to view the full documentation and learn how to use it by browsing a comprehensive list of examples.
+Visit [icflorescu.github.io/mantine-datatable](https://icflorescu.github.io/mantine-datatable-v6/) to view the full documentation and learn how to use it by browsing a comprehensive list of examples.
 
 ## Quickstart
 
 Install the package and its dependencies:
 
 ```sh
-npm i @mantine/core @mantine/hooks @emotion/react mantine-datatable
+npm i @mantine/core@6 @mantine/hooks@6 @emotion/react mantine-datatable@6
 ```
 
 If you're using Next.js, Vite, CRA, Remix or Gatsby, you might need to install additional dependencies. Please refer to Mantine's [getting started page](https://mantine.dev/pages/getting-started/) for more details.
@@ -109,17 +109,17 @@ export default function GettingStartedExample() {
 }
 ```
 
-Make sure to browse the comprehensive list of [usage examples](https://icflorescu.github.io/mantine-datatable/examples/basic-usage) to learn how to unleash the full power of Mantine DataTable.
+Make sure to browse the comprehensive list of [usage examples](https://icflorescu.github.io/mantine-datatable-v6/examples/basic-usage) to learn how to unleash the full power of Mantine DataTable.
 
 ## Other useful resources
 
-Mantine DataTable had the context-menu functionality baked in since its early days. If you're looking to use a context menu in other parts of your application, you might want to check out [Mantine Context Menu](https://icflorescu.github.io/mantine-contextmenu/).
+Mantine DataTable had the context-menu functionality baked in since its early days. If you're looking to use a context menu in other parts of your application, you might want to check out [Mantine Context Menu](https://icflorescu.github.io/mantine-contextmenu-v6/).
 
 ## Code contributors
 
 [![Contributors list](https://contrib.rocks/image?repo=icflorescu/mantine-datatable)](https://github.com/icflorescu/mantine-datatable/graphs/contributors)
 
-Want to [become a code contributor](https://icflorescu.github.io/mantine-datatable/contribute-and-support)?
+Want to [become a code contributor](https://icflorescu.github.io/mantine-datatable-v6/contribute-and-support)?
 
 ## Sponsor the project
 
