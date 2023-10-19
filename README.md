@@ -1,6 +1,6 @@
 # Mantine DataTable V6
 
-![Publish NPM & deploy docs workflow](https://github.com/icflorescu/mantine-datatable/actions/workflows/publish-and-deploy.yml/badge.svg)  
+![Publish NPM & deploy docs workflow](https://github.com/icflorescu/mantine-datatable-v6/actions/workflows/publish-and-deploy.yml/badge.svg)  
 [![NPM version][npm-image]][npm-url]
 [![License][license-image]][license-url]
 [![Stars][stars-image]][stars-url]
@@ -42,13 +42,13 @@ Emil Sorensen @ [kapa.ai](https://kapa.ai/):
 
 [![Who's using Mantine DataTable](https://user-images.githubusercontent.com/581999/258483859-f8f46b97-5900-4871-8243-c7316fbc244f.png)](https://icflorescu.github.io/mantine-datatable/)
 
-[Mantine DataTable](https://icflorescu.github.io/mantine-datatable/) is used by developers and startups around the world, such as: [kapa.ai](https://kapa.ai/), [exdatis.ai](https://exdatis.ai/), [teachfloor](https://www.teachfloor.com/), [MARKUP](https://www.getmarkup.com/), [BookieBase](https://bookiebase.ie/), [zipline](https://zipline.diced.tech/), [Pachtop](https://github.com/pacholoamit/pachtop), [Ganymede](https://github.com/Zibbp/ganymede), [COH3 Stats](https://coh3stats.com/), [Culver City Rental Registry](https://www.ccrentals.org/) and many more.
+[Mantine DataTable](https://icflorescu.github.io/mantine-datatable-v6/) is used by developers and startups around the world, such as: [kapa.ai](https://kapa.ai/), [exdatis.ai](https://exdatis.ai/), [teachfloor](https://www.teachfloor.com/), [MARKUP](https://www.getmarkup.com/), [BookieBase](https://bookiebase.ie/), [zipline](https://zipline.diced.tech/), [Pachtop](https://github.com/pacholoamit/pachtop), [Ganymede](https://github.com/Zibbp/ganymede), [COH3 Stats](https://coh3stats.com/), [Culver City Rental Registry](https://www.ccrentals.org/) and many more.
 
-If you're using [Mantine DataTable](https://icflorescu.github.io/mantine-datatable/) in your project, please drop me a line at the email address listed in my [GitHub profile](https://github.com/icflorescu) and I'll be happy to add it to the list and on the [documentation website](https://icflorescu.github.io/mantine-datatable/).
+If you're using [Mantine DataTable](https://icflorescu.github.io/mantine-datatable-v6/) in your project, please drop me a line at the email address listed in my [GitHub profile](https://github.com/icflorescu) and I'll be happy to add it to the list and on the [documentation website](https://icflorescu.github.io/mantine-datatable-v6/).
 
 ## Full documentation and examples
 
-Visit [icflorescu.github.io/mantine-datatable](https://icflorescu.github.io/mantine-datatable-v6/) to view the full documentation and learn how to use it by browsing a comprehensive list of examples.
+Visit [icflorescu.github.io/mantine-datatable-v6](https://icflorescu.github.io/mantine-datatable-v6/) to view the full documentation and learn how to use it by browsing a comprehensive list of examples.
 
 ## Quickstart
 
