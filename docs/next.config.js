@@ -22,7 +22,7 @@ module.exports = async (phase) => {
   };
 
   if (phase === 'phase-production-build' && process.env.GITHUB_PAGES === 'true') {
-    config.env.BASE_PATH = config.basePath = '/mantine-datatable';
+    config.env.BASE_PATH = config.basePath = '/mantine-datatable-v6';
     config.env.CANONICAL_URL = 'https://icflorescu.github.io/mantine-datatable-v6/';
   }
 
