@@ -40,7 +40,7 @@ Emil Sorensen @ [kapa.ai](https://kapa.ai/):
 
 > _Mantine DataTable is a great component that’s core to our web app - it saves us a ton of time and comes with great styling and features out of the box_
 
-[![Who's using Mantine DataTable](https://user-images.githubusercontent.com/581999/258483859-f8f46b97-5900-4871-8243-c7316fbc244f.png)](https://icflorescu.github.io/mantine-datatable/)
+[![Who's using Mantine DataTable](https://user-images.githubusercontent.com/581999/258483859-f8f46b97-5900-4871-8243-c7316fbc244f.png)](https://icflorescu.github.io/mantine-datatable-v6/)
 
 [Mantine DataTable](https://icflorescu.github.io/mantine-datatable-v6/) is used by developers and startups around the world, such as: [kapa.ai](https://kapa.ai/), [exdatis.ai](https://exdatis.ai/), [teachfloor](https://www.teachfloor.com/), [MARKUP](https://www.getmarkup.com/), [BookieBase](https://bookiebase.ie/), [zipline](https://zipline.diced.tech/), [Pachtop](https://github.com/pacholoamit/pachtop), [Ganymede](https://github.com/Zibbp/ganymede), [COH3 Stats](https://coh3stats.com/), [Culver City Rental Registry](https://www.ccrentals.org/) and many more.
 
@@ -52,13 +52,13 @@ Visit [icflorescu.github.io/mantine-datatable-v6](https://icflorescu.github.io/m
 
 ## Quickstart
 
-Install the package and its dependencies (Mantine v7 is not currently supported, so use v6.0.21):
+Install the package and its dependencies (this package supports Mantine V6; the V7 version is under development):
 
 ```sh
 npm i @mantine/core@6 @mantine/hooks@6 @emotion/react mantine-datatable@6
 ```
 
-If you're using Next.js, Vite, CRA, Remix or Gatsby, you might need to install additional dependencies. Please refer to Mantine's [getting started page](https://mantine.dev/pages/getting-started/) for more details.
+If you're using Next.js, Vite, CRA, Remix or Gatsby, you might need to install additional dependencies. Please refer to Mantine's [getting started page](https://v6.mantine.dev/pages/getting-started/) for more details.
 
 Use it in your code:
 
