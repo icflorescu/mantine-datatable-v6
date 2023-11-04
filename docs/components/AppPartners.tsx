@@ -29,7 +29,7 @@ const PARTNERS = [
   {
     name: 'Zipline',
     logo: { base: 'zipline', ext: 'png' },
-    link: 'https://zipline.diced.tech',
+    link: 'https://zipline.diced.sh',
   },
   {
     name: 'Pachtop',
