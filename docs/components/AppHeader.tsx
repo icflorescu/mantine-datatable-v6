@@ -5,7 +5,6 @@ import { HEADER_HEIGHT, NAVBAR_BREAKPOINT, NAVBAR_WIDTH } from '~/config';
 import ColorSchemeActionIcon from './appHeader/ColorSchemeActionIcon';
 import ColorSchemeControl from './appHeader/ColorSchemeControl';
 import NpmLinkButton from './appHeader/NpmLinkButton';
-import SearchButton from './appHeader/SearchButton';
 import SourceLinkActionIcon from './appHeader/SourceLinkActionIcon';
 import SourceLinkButton from './appHeader/SourceLinkButton';
 import SponsorsLinkActionIcon from './appHeader/SponsorsLinkActionIcon';
@@ -107,7 +106,7 @@ export default function AppHeader({ onShowNavbarClick }: { onShowNavbarClick: ()
         <Logo className={classes.logo} insideHeader />
       </Group>
       <Group spacing="xs">
-        <SearchButton />
+        {/* <SearchButton /> */}
         <Group className={classes.actionIcons} spacing="xs">
           <SourceLinkActionIcon />
           <SponsorsLinkActionIcon />
