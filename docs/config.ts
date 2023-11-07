@@ -182,6 +182,11 @@ export const PAGES: ({ external?: true; title: string; color?: MantineColor; des
         description: 'Example: how to implement a row actions cell on Mantine DataTable',
       },
       {
+        path: 'pinning-the-last-column',
+        title: 'Pinning the last column',
+        description: 'Example: how to pin the last column on Mantine DataTable',
+      },
+      {
         path: 'links-or-buttons-inside-clickable-rows-or-cells',
         title: 'Links or buttons inside clickable rows/cells',
         description: 'Example: how to add links or buttons inside Mantine DataTable clickable rows or cells',

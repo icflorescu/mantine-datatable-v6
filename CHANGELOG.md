@@ -3,6 +3,10 @@
 The following is a list of notable changes to the Mantine DataTable component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
+## 6.0.5 (2023-11-07)
+
+- Implement `pinLastColumn` feature
+
 ## 6.0.0 (2023-10-01)
 
 - Bump version to 6.0.0 to match the compatible versions of `@mantine/hooks` and `@mantine/core`. From now on, let's keep the major version of `mantine-datatable` in sync with the major version of Mantine core

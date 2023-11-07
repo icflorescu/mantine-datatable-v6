@@ -22,6 +22,11 @@ const PARTNERS = [
     link: 'https://www.getmarkup.com',
   },
   {
+    name: 'InvenTree',
+    logo: { base: 'inventree', ext: 'png', themed: true, scale: 140, shift: 1 },
+    link: 'https://inventree.org',
+  },
+  {
     name: 'BookieBase',
     logo: { base: 'bookiebase', ext: 'svg', themed: true, scale: 72, shift: 2 },
     link: 'https://bookiebase.ie',
