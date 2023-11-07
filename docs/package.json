@@ -14,7 +14,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@faker-js/faker": "^8.2.0",
-    "@formkit/auto-animate": "^0.8.0",
+    "@formkit/auto-animate": "^0.8.1",
     "@mantine/core": "^6.0.21",
     "@mantine/dates": "^6.0.21",
     "@mantine/hooks": "^6.0.21",
