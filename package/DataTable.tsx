@@ -1,4 +1,4 @@
-import { Box, MantineSize, Portal, Table, createStyles, packSx, type MantineTheme } from '@mantine/core';
+import { Box, MantineSize, Portal, Table, createStyles, packSx, px, type MantineTheme } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
 import {
   useCallback,
@@ -39,6 +39,7 @@ const useStyles = createStyles(
   ) => {
     const borderColorValue = typeof borderColor === 'function' ? borderColor(theme) : borderColor;
     const rowBorderColorValue = typeof rowBorderColor === 'function' ? rowBorderColor(theme) : rowBorderColor;
+    const shadowGradientAlpha = theme.colorScheme === 'dark' ? 0.5 : 0.05;
 
     return {
       root: {
@@ -101,6 +102,40 @@ const useStyles = createStyles(
           verticalAlign: 'bottom',
         },
       },
+      pinLastColumn: {
+        'th:last-of-type, td:last-of-type': {
+          position: 'sticky',
+          right: 0,
+          zIndex: 1,
+          background: 'inherit',
+          '&::after': {
+            content: "''",
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: theme.spacing.sm,
+            background: `linear-gradient(to left, ${theme.fn.rgba(theme.black, shadowGradientAlpha)}, ${theme.fn.rgba(
+              theme.black,
+              0
+            )}), linear-gradient(to left, ${theme.fn.rgba(theme.black, shadowGradientAlpha)}, ${theme.fn.rgba(
+              theme.black,
+              0
+            )} 30%)`,
+            borderRight: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
+            left: -px(theme.spacing.sm),
+            pointerEvents: 'none',
+            opacity: 0,
+            transition: `opacity 0.2s`,
+          },
+        },
+      },
+      pinnedColumnShadowVisible: {
+        'th:last-of-type, td:last-of-type': {
+          '&::after': {
+            opacity: 1,
+          },
+        },
+      },
     };
   }
 );
@@ -120,6 +155,7 @@ export default function DataTable<T>({
   fetching,
   columns,
   groups,
+  pinLastColumn,
   defaultColumnProps,
   defaultColumnRender,
   idAccessor = 'id',
@@ -332,7 +368,7 @@ export default function DataTable<T>({
         viewportRef={useMergedRef(scrollViewportRef, scrollViewportRefProp || null)}
         topShadowVisible={!scrolledToTop}
         leftShadowVisible={!(selectedRecords || scrolledToLeft)}
-        rightShadowVisible={!scrolledToRight}
+        rightShadowVisible={!scrolledToRight && !pinLastColumn}
         bottomShadowVisible={!scrolledToBottom}
         headerHeight={headerHeight}
         footerHeight={footerHeight}
@@ -349,6 +385,8 @@ export default function DataTable<T>({
             [classes.verticalAlignmentTop]: verticalAlignment === 'top',
             [classes.verticalAlignmentBottom]: verticalAlignment === 'bottom',
             [classes.tableWithColumnBordersAndSelectableRecords]: selectionColumnVisible && withColumnBorders,
+            [classes.pinLastColumn]: pinLastColumn,
+            [classes.pinnedColumnShadowVisible]: pinLastColumn && !scrolledToRight,
           })}
           striped={recordsLength ? striped : false}
           {...otherProps}
