@@ -13,6 +13,9 @@ type DataTableDragToggleColumnsProviderProps = {
   columnsToggle: DataTableColumnToggle[];
   setColumnsToggle: Dispatch<SetStateAction<DataTableColumnToggle[]>>;
   resetColumnsToggle: () => void;
+
+  setColumnWidth: (accessor: string, width: string | number) => void;
+  resetColumnsWidth: () => void;
 };
 
 export const DataTableDragToggleColumnsProvider = (props: DataTableDragToggleColumnsProviderProps) => {
@@ -25,6 +28,9 @@ export const DataTableDragToggleColumnsProvider = (props: DataTableDragToggleCol
 
     resetColumnsOrder,
     resetColumnsToggle,
+
+    setColumnWidth,
+    resetColumnsWidth,
   } = props;
 
   const [sourceColumn, setSourceColumn] = useState<string>('');
@@ -60,6 +66,8 @@ export const DataTableDragToggleColumnsProvider = (props: DataTableDragToggleCol
         swapColumns,
         resetColumnsOrder,
         resetColumnsToggle,
+        setColumnWidth,
+        resetColumnsWidth,
       }}
     >
       {children}

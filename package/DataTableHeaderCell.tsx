@@ -13,9 +13,10 @@ import {
   type Sx,
 } from '@mantine/core';
 import { IconArrowUp, IconArrowsVertical, IconGripVertical, IconX } from '@tabler/icons-react';
-import { useState, type BaseSyntheticEvent, type CSSProperties, type ReactNode } from 'react';
+import { useRef, useState, type BaseSyntheticEvent, type CSSProperties, type ReactNode } from 'react';
 import { useDataTableDragToggleColumnsContext } from './DataTableDragToggleColumns.context';
 import DataTableHeaderCellFilter from './DataTableHeaderCellFilter';
+import { DataTableResizableHeaderKnob } from './DataTableResizableHeaderKnob';
 import { DataTableColumnToggle } from './hooks';
 import type { DataTableColumn, DataTableSortProps } from './types';
 import { humanize, useMediaQueryStringOrFunction } from './utils';
@@ -58,6 +59,12 @@ const useStyles = createStyles((theme) => ({
       },
     },
   },
+  resizableColumnHeader: {
+    position: 'relative',
+  },
+  resizableColumnHeaderKnob: {
+    position: 'relative',
+  },
   sortableColumnHeaderGroup: {
     gap: '0.25em',
   },
@@ -96,7 +103,15 @@ type DataTableHeaderCellProps<T> = {
   onSortStatusChange: DataTableSortProps['onSortStatusChange'];
 } & Pick<
   DataTableColumn<T>,
-  'accessor' | 'sortable' | 'draggable' | 'toggleable' | 'textAlignment' | 'width' | 'filter' | 'filtering'
+  | 'accessor'
+  | 'sortable'
+  | 'draggable'
+  | 'toggleable'
+  | 'resizable'
+  | 'textAlignment'
+  | 'width'
+  | 'filter'
+  | 'filtering'
 >;
 
 export default function DataTableHeaderCell<T>({
@@ -109,6 +124,7 @@ export default function DataTableHeaderCell<T>({
   sortable,
   draggable,
   toggleable,
+  resizable,
   sortIcons,
   textAlignment,
   width,
@@ -121,6 +137,8 @@ export default function DataTableHeaderCell<T>({
     useDataTableDragToggleColumnsContext();
 
   const [dragOver, setDragOver] = useState<boolean>(false);
+
+  const columnRef = useRef<HTMLTableCellElement | null>(null);
 
   const [columnsPopoverOpened, setColumnsPopoverOpened] = useState<boolean>(false);
 
@@ -195,15 +213,15 @@ export default function DataTableHeaderCell<T>({
         {
           [classes.sortableColumnHeader]: sortable,
           [classes.toggleableColumnHeader]: toggleable,
+          [classes.resizableColumnHeader]: resizable,
         },
         className
       )}
       sx={[
         {
           '&&': { textAlign: textAlignment },
-          width,
-          minWidth: width,
-          maxWidth: width,
+          width: `${width} !important`,
+          ...(!resizable ? { minWidth: width, maxWidth: width } : { minWidth: '1px' }),
         },
         sx,
       ]}
@@ -218,6 +236,7 @@ export default function DataTableHeaderCell<T>({
         }
       }}
       onKeyDown={(e) => e.key === 'Enter' && sortAction?.()}
+      ref={columnRef}
     >
       <Group className={classes.sortableColumnHeaderGroup} position="apart" noWrap>
         <Popover
@@ -320,6 +339,7 @@ export default function DataTableHeaderCell<T>({
         ) : null}
         {filter ? <DataTableHeaderCellFilter isActive={!!filtering}>{filter}</DataTableHeaderCellFilter> : null}
       </Group>
+      {resizable ? <DataTableResizableHeaderKnob accessor={accessor as string} columnRef={columnRef} /> : null}
     </Box>
   );
 }

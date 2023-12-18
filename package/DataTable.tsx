@@ -1,4 +1,14 @@
-import { Box, MantineSize, Portal, Table, createStyles, packSx, px, type MantineTheme } from '@mantine/core';
+import {
+  Box,
+  MantineSize,
+  Portal,
+  Table,
+  createStyles,
+  getStylesRef,
+  packSx,
+  px,
+  type MantineTheme,
+} from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
 import {
   useCallback,
@@ -80,6 +90,11 @@ const useStyles = createStyles(
       },
       tableWithBorder: {
         border: `1px solid ${borderColorValue}`,
+      },
+      resizableColumnHeaderKnobTransparent: {
+        [`& .${getStylesRef('resizableColumnHeaderKnob')}`]: {
+          background: 'transparent',
+        },
       },
       tableWithColumnBorders: {
         '&&': {
@@ -363,49 +378,57 @@ export default function DataTable<T>({
   const styleProperties = typeof styles === 'function' ? styles(theme, EMPTY_OBJECT, EMPTY_OBJECT) : styles;
 
   return (
-    <Box
-      {...marginProperties}
-      className={cx(classes.root, { [classes.tableWithBorder]: withBorder }, className, classNames?.root)}
-      sx={[
-        (theme) => ({
-          borderRadius: theme.radius[borderRadius as MantineSize] || borderRadius,
-          boxShadow: theme.shadows[shadow as MantineSize] || shadow,
-          height,
-          minHeight,
-        }),
-        ...packSx(sx),
-      ]}
-      style={{ ...styleProperties?.root, ...style } as CSSProperties}
-    >
-      <DataTableScrollArea
-        viewportRef={useMergedRef(scrollViewportRef, scrollViewportRefProp || null)}
-        topShadowVisible={!scrolledToTop}
-        leftShadowVisible={!(selectedRecords || scrolledToLeft)}
-        rightShadowVisible={!scrolledToRight && !pinLastColumn}
-        bottomShadowVisible={!scrolledToBottom}
-        headerHeight={headerHeight}
-        footerHeight={footerHeight}
-        onScrollPositionChange={handleScrollPositionChange}
-        scrollAreaProps={scrollAreaProps}
+    <DataTableDragToggleColumnsProvider {...dragToggle}>
+      <Box
+        {...marginProperties}
+        className={cx(
+          classes.root,
+          {
+            [classes.tableWithBorder]: withBorder,
+            [classes.resizableColumnHeaderKnobTransparent]: withColumnBorders,
+          },
+          className,
+          classNames?.root
+        )}
+        sx={[
+          (theme) => ({
+            borderRadius: theme.radius[borderRadius as MantineSize] || borderRadius,
+            boxShadow: theme.shadows[shadow as MantineSize] || shadow,
+            height,
+            minHeight,
+          }),
+          ...packSx(sx),
+        ]}
+        style={{ ...styleProperties?.root, ...style } as CSSProperties}
       >
-        <Table
-          ref={tableRef}
-          horizontalSpacing={horizontalSpacing}
-          className={cx(classes.table, {
-            [classes.tableWithColumnBorders]: withColumnBorders,
-            [classes.lastRowBorderBottomVisible]: tableHeight < scrollViewportHeight,
-            [classes.textSelectionDisabled]: textSelectionDisabled,
-            [classes.verticalAlignmentTop]: verticalAlignment === 'top',
-            [classes.verticalAlignmentBottom]: verticalAlignment === 'bottom',
-            [classes.tableWithColumnBordersAndSelectableRecords]: selectionColumnVisible && withColumnBorders,
-            [classes.pinLastColumn]: pinLastColumn,
-            [classes.pinnedColumnShadowVisible]: pinLastColumn && !scrolledToRight,
-          })}
-          striped={recordsLength ? striped : false}
-          {...otherProps}
+        <DataTableScrollArea
+          viewportRef={useMergedRef(scrollViewportRef, scrollViewportRefProp || null)}
+          topShadowVisible={!scrolledToTop}
+          leftShadowVisible={!(selectedRecords || scrolledToLeft)}
+          rightShadowVisible={!scrolledToRight && !pinLastColumn}
+          bottomShadowVisible={!scrolledToBottom}
+          headerHeight={headerHeight}
+          footerHeight={footerHeight}
+          onScrollPositionChange={handleScrollPositionChange}
+          scrollAreaProps={scrollAreaProps}
         >
-          {withoutHeader ? null : (
-            <DataTableDragToggleColumnsProvider {...dragToggle}>
+          <Table
+            ref={tableRef}
+            horizontalSpacing={horizontalSpacing}
+            className={cx(classes.table, {
+              [classes.tableWithColumnBorders]: withColumnBorders,
+              [classes.lastRowBorderBottomVisible]: tableHeight < scrollViewportHeight,
+              [classes.textSelectionDisabled]: textSelectionDisabled,
+              [classes.verticalAlignmentTop]: verticalAlignment === 'top',
+              [classes.verticalAlignmentBottom]: verticalAlignment === 'bottom',
+              [classes.tableWithColumnBordersAndSelectableRecords]: selectionColumnVisible && withColumnBorders,
+              [classes.pinLastColumn]: pinLastColumn,
+              [classes.pinnedColumnShadowVisible]: pinLastColumn && !scrolledToRight,
+            })}
+            striped={recordsLength ? striped : false}
+            {...otherProps}
+          >
+            {withoutHeader ? null : (
               <DataTableHeader<T>
                 ref={headerRef}
                 className={classNames?.header}
@@ -423,201 +446,201 @@ export default function DataTable<T>({
                 selectionCheckboxProps={allRecordsSelectionCheckboxProps}
                 leftShadowVisible={selectionVisibleAndNotScrolledToLeft}
               />
-            </DataTableDragToggleColumnsProvider>
-          )}
-          <tbody ref={bodyRef}>
-            {recordsLength ? (
-              records.map((record, recordIndex) => {
-                const recordId = getRecordId(record, idAccessor);
-                const isSelected = selectedRecordIds?.includes(recordId) || false;
+            )}
+            <tbody ref={bodyRef}>
+              {recordsLength ? (
+                records.map((record, recordIndex) => {
+                  const recordId = getRecordId(record, idAccessor);
+                  const isSelected = selectedRecordIds?.includes(recordId) || false;
 
-                let showContextMenuOnClick = false;
-                let showContextMenuOnRightClick = false;
-                if (rowContextMenu) {
-                  const { hidden } = rowContextMenu;
-                  if (!hidden || !(typeof hidden === 'function' ? hidden(record, recordIndex) : hidden)) {
-                    if (rowContextMenu.trigger === 'click') {
-                      showContextMenuOnClick = true;
-                    } else {
-                      showContextMenuOnRightClick = true;
+                  let showContextMenuOnClick = false;
+                  let showContextMenuOnRightClick = false;
+                  if (rowContextMenu) {
+                    const { hidden } = rowContextMenu;
+                    if (!hidden || !(typeof hidden === 'function' ? hidden(record, recordIndex) : hidden)) {
+                      if (rowContextMenu.trigger === 'click') {
+                        showContextMenuOnClick = true;
+                      } else {
+                        showContextMenuOnRightClick = true;
+                      }
                     }
                   }
-                }
 
-                let handleSelectionChange: ChangeEventHandler<HTMLInputElement> | undefined;
-                if (onSelectedRecordsChange && selectedRecords) {
-                  handleSelectionChange = (e) => {
-                    if ((e.nativeEvent as PointerEvent).shiftKey && lastSelectionChangeIndex !== null) {
-                      const targetRecords = records.filter(
-                        recordIndex > lastSelectionChangeIndex
-                          ? (r, index) =>
-                              index >= lastSelectionChangeIndex &&
-                              index <= recordIndex &&
-                              (isRecordSelectable ? isRecordSelectable(r, index) : true)
-                          : (r, index) =>
-                              index >= recordIndex &&
-                              index <= lastSelectionChangeIndex &&
-                              (isRecordSelectable ? isRecordSelectable(r, index) : true)
-                      );
-                      onSelectedRecordsChange(
-                        isSelected
-                          ? differenceBy(selectedRecords, targetRecords, (r) => getRecordId(r, idAccessor))
-                          : uniqBy([...selectedRecords, ...targetRecords], (r) => getRecordId(r, idAccessor))
-                      );
-                    } else {
-                      onSelectedRecordsChange(
-                        isSelected
-                          ? selectedRecords.filter((record) => getRecordId(record, idAccessor) !== recordId)
-                          : uniqBy([...selectedRecords, record], (record) => getRecordId(record, idAccessor))
-                      );
-                    }
-                    setLastSelectionChangeIndex(recordIndex);
-                  };
-                }
+                  let handleSelectionChange: ChangeEventHandler<HTMLInputElement> | undefined;
+                  if (onSelectedRecordsChange && selectedRecords) {
+                    handleSelectionChange = (e) => {
+                      if ((e.nativeEvent as PointerEvent).shiftKey && lastSelectionChangeIndex !== null) {
+                        const targetRecords = records.filter(
+                          recordIndex > lastSelectionChangeIndex
+                            ? (r, index) =>
+                                index >= lastSelectionChangeIndex &&
+                                index <= recordIndex &&
+                                (isRecordSelectable ? isRecordSelectable(r, index) : true)
+                            : (r, index) =>
+                                index >= recordIndex &&
+                                index <= lastSelectionChangeIndex &&
+                                (isRecordSelectable ? isRecordSelectable(r, index) : true)
+                        );
+                        onSelectedRecordsChange(
+                          isSelected
+                            ? differenceBy(selectedRecords, targetRecords, (r) => getRecordId(r, idAccessor))
+                            : uniqBy([...selectedRecords, ...targetRecords], (r) => getRecordId(r, idAccessor))
+                        );
+                      } else {
+                        onSelectedRecordsChange(
+                          isSelected
+                            ? selectedRecords.filter((record) => getRecordId(record, idAccessor) !== recordId)
+                            : uniqBy([...selectedRecords, record], (record) => getRecordId(record, idAccessor))
+                        );
+                      }
+                      setLastSelectionChangeIndex(recordIndex);
+                    };
+                  }
 
-                let handleClick: MouseEventHandler<HTMLTableRowElement> | undefined;
-                if (showContextMenuOnClick) {
-                  handleClick = (e) => {
-                    setRowContextMenuInfo({ y: e.clientY, x: e.clientX, record, recordIndex });
-                    onRowClick?.(record, recordIndex, e);
-                  };
-                } else if (onRowClick) {
-                  handleClick = (e) => {
-                    onRowClick(record, recordIndex, e);
-                  };
-                }
+                  let handleClick: MouseEventHandler<HTMLTableRowElement> | undefined;
+                  if (showContextMenuOnClick) {
+                    handleClick = (e) => {
+                      setRowContextMenuInfo({ y: e.clientY, x: e.clientX, record, recordIndex });
+                      onRowClick?.(record, recordIndex, e);
+                    };
+                  } else if (onRowClick) {
+                    handleClick = (e) => {
+                      onRowClick(record, recordIndex, e);
+                    };
+                  }
 
-                let handleContextMenu: MouseEventHandler<HTMLTableRowElement> | undefined;
-                if (showContextMenuOnRightClick) {
-                  handleContextMenu = (e) => {
-                    e.preventDefault();
-                    setRowContextMenuInfo({ y: e.clientY, x: e.clientX, record, recordIndex });
-                  };
-                }
+                  let handleContextMenu: MouseEventHandler<HTMLTableRowElement> | undefined;
+                  if (showContextMenuOnRightClick) {
+                    handleContextMenu = (e) => {
+                      e.preventDefault();
+                      setRowContextMenuInfo({ y: e.clientY, x: e.clientX, record, recordIndex });
+                    };
+                  }
 
-                return (
-                  <DataTableRow<T>
-                    key={recordId as Key}
-                    record={record}
-                    recordIndex={recordIndex}
-                    columns={effectiveColumns}
-                    defaultColumnProps={defaultColumnProps}
-                    defaultColumnRender={defaultColumnRender}
-                    selectionVisible={selectionColumnVisible}
-                    selectionChecked={isSelected}
-                    onSelectionChange={handleSelectionChange}
-                    isRecordSelectable={isRecordSelectable}
-                    getSelectionCheckboxProps={getRecordSelectionCheckboxProps}
-                    onClick={handleClick}
-                    onCellClick={onCellClick}
-                    onContextMenu={handleContextMenu}
-                    contextMenuVisible={
-                      rowContextMenuInfo ? getRecordId(rowContextMenuInfo.record, idAccessor) === recordId : false
-                    }
-                    expansion={rowExpansionInfo}
-                    className={rowClassName}
-                    style={rowStyle}
-                    sx={rowSx}
-                    customAttributes={customRowAttributes}
-                    leftShadowVisible={selectionVisibleAndNotScrolledToLeft}
-                  />
-                );
-              })
-            ) : (
-              <DataTableEmptyRow />
-            )}
-          </tbody>
-          {effectiveColumns.some(({ footer }) => footer) && (
-            <DataTableFooter<T>
-              ref={footerRef}
-              className={classNames?.footer}
-              style={styleProperties?.footer}
-              borderColor={borderColor}
-              columns={effectiveColumns}
-              defaultColumnProps={defaultColumnProps}
-              selectionVisible={selectionColumnVisible}
-              leftShadowVisible={selectionVisibleAndNotScrolledToLeft}
-              scrollDiff={tableHeight - scrollViewportHeight}
-            />
-          )}
-        </Table>
-      </DataTableScrollArea>
-      {page && (
-        <DataTablePagination
-          ref={paginationRef}
-          className={classNames?.pagination}
-          style={styleProperties?.pagination}
-          topBorderColor={borderColor}
-          horizontalSpacing={horizontalSpacing}
-          fetching={fetching}
-          page={page}
-          onPageChange={handlePageChange}
-          totalRecords={totalRecords}
-          recordsPerPage={recordsPerPage}
-          onRecordsPerPageChange={onRecordsPerPageChange}
-          recordsPerPageOptions={recordsPerPageOptions}
-          recordsPerPageLabel={recordsPerPageLabel}
-          paginationColor={paginationColor}
-          paginationSize={paginationSize}
-          paginationText={paginationText}
-          paginationWrapBreakpoint={paginationWrapBreakpoint}
-          getPaginationControlProps={getPaginationControlProps}
-          noRecordsText={noRecordsText}
-          loadingText={loadingText}
-          recordsLength={recordsLength}
-        />
-      )}
-      <DataTableLoader
-        pt={headerHeight}
-        pb={paginationHeight}
-        fetching={fetching}
-        backgroundBlur={loaderBackgroundBlur}
-        customContent={customLoader}
-        size={loaderSize}
-        variant={loaderVariant}
-        color={loaderColor}
-      />
-      <DataTableEmptyState
-        pt={headerHeight}
-        pb={paginationHeight}
-        icon={noRecordsIcon}
-        text={noRecordsText}
-        active={!fetching && !recordsLength}
-      >
-        {emptyState}
-      </DataTableEmptyState>
-      {rowContextMenu && rowContextMenuInfo && (
-        <Portal>
-          <DataTableRowMenu
-            zIndex={rowContextMenu.zIndex}
-            borderRadius={rowContextMenu.borderRadius}
-            shadow={rowContextMenu.shadow}
-            y={rowContextMenuInfo.y}
-            x={rowContextMenuInfo.x}
-            onDestroy={() => setRowContextMenuInfo(null)}
-          >
-            {rowContextMenu
-              .items(rowContextMenuInfo.record, rowContextMenuInfo.recordIndex)
-              .map(({ divider, key, title, icon, color, hidden, disabled, onClick }) =>
-                divider ? (
-                  <DataTableRowMenuDivider key={key} />
-                ) : hidden ? null : (
-                  <DataTableRowMenuItem
-                    key={key}
-                    title={title ?? humanize(key)}
-                    icon={icon}
-                    color={color}
-                    disabled={disabled}
-                    onClick={() => {
-                      setRowContextMenuInfo(null);
-                      onClick();
-                    }}
-                  />
-                )
+                  return (
+                    <DataTableRow<T>
+                      key={recordId as Key}
+                      record={record}
+                      recordIndex={recordIndex}
+                      columns={effectiveColumns}
+                      defaultColumnProps={defaultColumnProps}
+                      defaultColumnRender={defaultColumnRender}
+                      selectionVisible={selectionColumnVisible}
+                      selectionChecked={isSelected}
+                      onSelectionChange={handleSelectionChange}
+                      isRecordSelectable={isRecordSelectable}
+                      getSelectionCheckboxProps={getRecordSelectionCheckboxProps}
+                      onClick={handleClick}
+                      onCellClick={onCellClick}
+                      onContextMenu={handleContextMenu}
+                      contextMenuVisible={
+                        rowContextMenuInfo ? getRecordId(rowContextMenuInfo.record, idAccessor) === recordId : false
+                      }
+                      expansion={rowExpansionInfo}
+                      className={rowClassName}
+                      style={rowStyle}
+                      sx={rowSx}
+                      customAttributes={customRowAttributes}
+                      leftShadowVisible={selectionVisibleAndNotScrolledToLeft}
+                    />
+                  );
+                })
+              ) : (
+                <DataTableEmptyRow />
               )}
-          </DataTableRowMenu>
-        </Portal>
-      )}
-    </Box>
+            </tbody>
+            {effectiveColumns.some(({ footer }) => footer) && (
+              <DataTableFooter<T>
+                ref={footerRef}
+                className={classNames?.footer}
+                style={styleProperties?.footer}
+                borderColor={borderColor}
+                columns={effectiveColumns}
+                defaultColumnProps={defaultColumnProps}
+                selectionVisible={selectionColumnVisible}
+                leftShadowVisible={selectionVisibleAndNotScrolledToLeft}
+                scrollDiff={tableHeight - scrollViewportHeight}
+              />
+            )}
+          </Table>
+        </DataTableScrollArea>
+        {page && (
+          <DataTablePagination
+            ref={paginationRef}
+            className={classNames?.pagination}
+            style={styleProperties?.pagination}
+            topBorderColor={borderColor}
+            horizontalSpacing={horizontalSpacing}
+            fetching={fetching}
+            page={page}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+            recordsPerPage={recordsPerPage}
+            onRecordsPerPageChange={onRecordsPerPageChange}
+            recordsPerPageOptions={recordsPerPageOptions}
+            recordsPerPageLabel={recordsPerPageLabel}
+            paginationColor={paginationColor}
+            paginationSize={paginationSize}
+            paginationText={paginationText}
+            paginationWrapBreakpoint={paginationWrapBreakpoint}
+            getPaginationControlProps={getPaginationControlProps}
+            noRecordsText={noRecordsText}
+            loadingText={loadingText}
+            recordsLength={recordsLength}
+          />
+        )}
+        <DataTableLoader
+          pt={headerHeight}
+          pb={paginationHeight}
+          fetching={fetching}
+          backgroundBlur={loaderBackgroundBlur}
+          customContent={customLoader}
+          size={loaderSize}
+          variant={loaderVariant}
+          color={loaderColor}
+        />
+        <DataTableEmptyState
+          pt={headerHeight}
+          pb={paginationHeight}
+          icon={noRecordsIcon}
+          text={noRecordsText}
+          active={!fetching && !recordsLength}
+        >
+          {emptyState}
+        </DataTableEmptyState>
+        {rowContextMenu && rowContextMenuInfo && (
+          <Portal>
+            <DataTableRowMenu
+              zIndex={rowContextMenu.zIndex}
+              borderRadius={rowContextMenu.borderRadius}
+              shadow={rowContextMenu.shadow}
+              y={rowContextMenuInfo.y}
+              x={rowContextMenuInfo.x}
+              onDestroy={() => setRowContextMenuInfo(null)}
+            >
+              {rowContextMenu
+                .items(rowContextMenuInfo.record, rowContextMenuInfo.recordIndex)
+                .map(({ divider, key, title, icon, color, hidden, disabled, onClick }) =>
+                  divider ? (
+                    <DataTableRowMenuDivider key={key} />
+                  ) : hidden ? null : (
+                    <DataTableRowMenuItem
+                      key={key}
+                      title={title ?? humanize(key)}
+                      icon={icon}
+                      color={color}
+                      disabled={disabled}
+                      onClick={() => {
+                        setRowContextMenuInfo(null);
+                        onClick();
+                      }}
+                    />
+                  )
+                )}
+            </DataTableRowMenu>
+          </Portal>
+        )}
+      </Box>
+    </DataTableDragToggleColumnsProvider>
   );
 }
