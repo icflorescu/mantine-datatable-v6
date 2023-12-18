@@ -88,6 +88,8 @@ export default forwardRef(function DataTableHeader<T>(
             width,
             title,
             sortable,
+            draggable,
+            toggleable,
             titleClassName,
             titleStyle,
             titleSx,
@@ -107,6 +109,8 @@ export default forwardRef(function DataTableHeader<T>(
               width={width}
               title={title}
               sortable={sortable}
+              draggable={draggable}
+              toggleable={toggleable}
               sortStatus={sortStatus}
               sortIcons={sortIcons}
               onSortStatusChange={onSortStatusChange}

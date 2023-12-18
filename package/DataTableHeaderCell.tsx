@@ -1,7 +1,22 @@
-import { Box, Center, Group, createStyles, type MantineTheme, type Sx } from '@mantine/core';
-import { IconArrowUp, IconArrowsVertical } from '@tabler/icons-react';
-import type { BaseSyntheticEvent, CSSProperties, ReactNode } from 'react';
+import {
+  ActionIcon,
+  Box,
+  Center,
+  Checkbox,
+  Flex,
+  Group,
+  Popover,
+  Stack,
+  createStyles,
+  getStylesRef,
+  type MantineTheme,
+  type Sx,
+} from '@mantine/core';
+import { IconArrowUp, IconArrowsVertical, IconGripVertical, IconX } from '@tabler/icons-react';
+import { useState, type BaseSyntheticEvent, type CSSProperties, type ReactNode } from 'react';
+import { useDataTableDragToggleColumnsContext } from './DataTableDragToggleColumns.context';
 import DataTableHeaderCellFilter from './DataTableHeaderCellFilter';
+import { DataTableColumnToggle } from './hooks';
 import type { DataTableColumn, DataTableSortProps } from './types';
 import { humanize, useMediaQueryStringOrFunction } from './utils';
 
@@ -11,6 +26,36 @@ const useStyles = createStyles((theme) => ({
     transition: 'background .15s ease',
     '&:hover:not(:has(button:hover))': {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+    },
+  },
+  draggableColumnHeader: {
+    cursor: 'grab',
+    borderRadius: 6,
+    transition: 'all 0.2s',
+    '&:active': {
+      cursor: 'grabbing',
+    },
+    '&:hover:not(:has(button:hover))': {
+      background: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+    },
+  },
+  draggableColumnHeaderIcon: {
+    cursor: 'inherit',
+    margin: '-2px 2px 0',
+  },
+  draggableColumnHeaderOver: {
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
+  },
+  toggleableColumnHeaderIcon: {
+    ref: getStylesRef('toggleableColumnHeaderIcon'),
+    transition: 'opacity 0.2s',
+    opacity: '0.1',
+  },
+  toggleableColumnHeader: {
+    '&:hover': {
+      [`& .${getStylesRef('toggleableColumnHeaderIcon')}`]: {
+        opacity: 1,
+      },
     },
   },
   sortableColumnHeaderGroup: {
@@ -49,7 +94,10 @@ type DataTableHeaderCellProps<T> = {
   sortStatus: DataTableSortProps['sortStatus'];
   sortIcons: DataTableSortProps['sortIcons'];
   onSortStatusChange: DataTableSortProps['onSortStatusChange'];
-} & Pick<DataTableColumn<T>, 'accessor' | 'sortable' | 'textAlignment' | 'width' | 'filter' | 'filtering'>;
+} & Pick<
+  DataTableColumn<T>,
+  'accessor' | 'sortable' | 'draggable' | 'toggleable' | 'textAlignment' | 'width' | 'filter' | 'filtering'
+>;
 
 export default function DataTableHeaderCell<T>({
   className,
@@ -59,6 +107,8 @@ export default function DataTableHeaderCell<T>({
   visibleMediaQuery,
   title,
   sortable,
+  draggable,
+  toggleable,
   sortIcons,
   textAlignment,
   width,
@@ -67,10 +117,21 @@ export default function DataTableHeaderCell<T>({
   filter,
   filtering,
 }: DataTableHeaderCellProps<T>) {
+  const { setSourceColumn, setTargetColumn, swapColumns, columnsToggle, setColumnsToggle } =
+    useDataTableDragToggleColumnsContext();
+
+  const [dragOver, setDragOver] = useState<boolean>(false);
+
+  const [columnsPopoverOpened, setColumnsPopoverOpened] = useState<boolean>(false);
+
   const { cx, classes } = useStyles();
+
   if (!useMediaQueryStringOrFunction(visibleMediaQuery)) return null;
+
   const text = title ?? humanize(accessor);
+
   const tooltip = typeof text === 'string' ? text : undefined;
+
   const sortAction =
     sortable && onSortStatusChange
       ? (e?: BaseSyntheticEvent) => {
@@ -87,10 +148,56 @@ export default function DataTableHeaderCell<T>({
           });
         }
       : undefined;
+
+  const handleColumnDragStart = (e: React.DragEvent) => {
+    e.stopPropagation();
+    setSourceColumn(accessor as string);
+    setDragOver(false);
+  };
+
+  const handleColumnDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setTargetColumn(accessor as string);
+    setDragOver(true);
+  };
+
+  const handleColumnDrop = () => {
+    setTargetColumn(accessor as string);
+    setDragOver(false);
+    swapColumns();
+  };
+
+  const handleColumnDragEnter = () => {
+    setDragOver(true);
+  };
+
+  const handleColumnDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleColumnToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    setColumnsToggle((columnsToggle) =>
+      columnsToggle.map((c) => {
+        if (c.accessor === accessor) {
+          return { ...c, toggled: false };
+        }
+        return c;
+      })
+    );
+  };
+
   return (
     <Box
       component="th"
-      className={cx({ [classes.sortableColumnHeader]: sortable }, className)}
+      className={cx(
+        {
+          [classes.sortableColumnHeader]: sortable,
+          [classes.toggleableColumnHeader]: toggleable,
+        },
+        className
+      )}
       sx={[
         {
           '&&': { textAlign: textAlignment },
@@ -104,12 +211,94 @@ export default function DataTableHeaderCell<T>({
       role={sortable ? 'button' : undefined}
       tabIndex={sortable ? 0 : undefined}
       onClick={sortAction}
+      onContextMenu={(e) => {
+        if (toggleable) {
+          e.preventDefault();
+          setColumnsPopoverOpened(true);
+        }
+      }}
       onKeyDown={(e) => e.key === 'Enter' && sortAction?.()}
     >
       <Group className={classes.sortableColumnHeaderGroup} position="apart" noWrap>
-        <Box className={cx(classes.columnHeaderText, classes.sortableColumnHeaderText)} title={tooltip}>
-          {text}
-        </Box>
+        <Popover
+          width={200}
+          position="bottom"
+          withArrow
+          shadow="md"
+          opened={columnsPopoverOpened}
+          onChange={setColumnsPopoverOpened}
+        >
+          <Popover.Target>
+            <Flex
+              align="center"
+              w="100%"
+              className={cx({
+                [classes.draggableColumnHeader]: draggable,
+                [classes.draggableColumnHeaderOver]: dragOver,
+              })}
+              draggable={draggable}
+              onDragStart={draggable ? handleColumnDragStart : undefined}
+              onDragEnter={draggable ? handleColumnDragEnter : undefined}
+              onDragOver={draggable ? handleColumnDragOver : undefined}
+              onDrop={draggable ? handleColumnDrop : undefined}
+              onDragLeave={draggable ? handleColumnDragLeave : undefined}
+            >
+              {draggable ? (
+                <Center className={classes.draggableColumnHeaderIcon} role="img" aria-label="Drag column">
+                  <ActionIcon
+                    style={{ cursor: 'grab' }}
+                    variant="subtle"
+                    size="xs"
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <IconGripVertical />
+                  </ActionIcon>
+                </Center>
+              ) : null}
+
+              <Box className={cx(classes.columnHeaderText, classes.sortableColumnHeaderText)} title={tooltip}>
+                {text}
+              </Box>
+            </Flex>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Stack>
+              {columnsToggle
+                .filter((column) => column.toggleable)
+                .map((column: DataTableColumnToggle) => {
+                  return (
+                    <Group key={column.accessor}>
+                      <Checkbox
+                        size="xs"
+                        label={column.accessor}
+                        checked={column.toggled}
+                        onChange={(e) => {
+                          setColumnsToggle(
+                            columnsToggle.map((c: DataTableColumnToggle) => {
+                              if (c.accessor === column.accessor) {
+                                return { ...c, toggled: e.currentTarget.checked };
+                              }
+                              return c;
+                            })
+                          );
+                        }}
+                      />
+                    </Group>
+                  );
+                })}
+            </Stack>
+          </Popover.Dropdown>
+        </Popover>
+        {toggleable ? (
+          <Center className={classes.toggleableColumnHeaderIcon} role="img" aria-label="Toggle column">
+            <ActionIcon size="xs" variant="light" onClick={handleColumnToggle}>
+              <IconX />
+            </ActionIcon>
+          </Center>
+        ) : null}
+
         {sortable || sortStatus?.columnAccessor === accessor ? (
           <>
             {sortStatus?.columnAccessor === accessor ? (
