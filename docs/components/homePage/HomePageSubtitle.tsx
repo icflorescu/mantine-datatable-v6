@@ -1,6 +1,6 @@
 import { Anchor, Text, createStyles } from '@mantine/core';
 import { IconArrowDown, IconDiscountCheck, IconExclamationCircle } from '@tabler/icons-react';
-import InternalLink from '../InternalLink';
+import ExternalLink from '../ExternalLink';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -56,8 +56,13 @@ export default function HomePageSubtitle() {
       <div className={classes.line}>
         <IconExclamationCircle className={cx(classes.lineIcon, classes.warningIcon)} size={18} />
         <Text color="dimmed" size="sm">
-          supports <strong>Mantine V6</strong>; support for <strong>Mantine V7</strong> is{' '}
-          <InternalLink to="/mantine-v7-support">under development</InternalLink> ⏳
+          This version supports <strong>Mantine V6</strong>.
+          <br />
+          If you use <strong>Mantine V7</strong>, check out{' '}
+          <strong>
+            <ExternalLink to="https://icflorescu.github.io/mantine-datatable/">Mantine DataTable V7</ExternalLink>
+          </strong>
+          .
         </Text>
       </div>
     </div>

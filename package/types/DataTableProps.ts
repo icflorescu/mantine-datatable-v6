@@ -75,6 +75,12 @@ export type DataTableProps<T> = {
   defaultColumnProps?: DataTableDefaultColumnProps<T>;
 
   /**
+   * If you want to use drag and drop as well as toggle to reorder and toggle columns
+   * provide a unique key which will be used to store the column order in localStorage.
+   */
+  storeColumnsKey?: string | undefined;
+
+  /**
    * A default render function for all columns; accepts the current record, its index in `records`
    * and the column accessor
    */
