@@ -127,6 +127,16 @@ export const PAGES: ({ external?: true; title: string; color?: MantineColor; des
         description: 'Example: sorting data with Mantine DataTable',
       },
       {
+        path: 'dragging-toggling',
+        title: 'Dragging & Toggling',
+        description: `Example: dragging & toggling columns with Mantine DataTable`,
+      },
+      {
+        path: 'resizing',
+        title: 'Column resizing',
+        description: `Example: resizing Mantine DataTable columns`,
+      },
+      {
         path: 'infinite-scrolling',
         title: 'Implementing infinite scrolling',
         description: 'Example: implementing infinite scrolling with Mantine DataTable',
