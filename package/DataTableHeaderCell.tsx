@@ -16,7 +16,7 @@ import { IconArrowUp, IconArrowsVertical, IconGripVertical, IconX } from '@table
 import { useRef, useState, type BaseSyntheticEvent, type CSSProperties, type ReactNode } from 'react';
 import { useDataTableDragToggleColumnsContext } from './DataTableDragToggleColumns.context';
 import DataTableHeaderCellFilter from './DataTableHeaderCellFilter';
-import { DataTableResizableHeaderKnob } from './DataTableResizableHeaderKnob';
+import { DataTableResizableHeaderHandle } from './DataTableResizableHeaderHandle';
 import { DataTableColumnToggle } from './hooks';
 import type { DataTableColumn, DataTableSortProps } from './types';
 import { humanize, useMediaQueryStringOrFunction } from './utils';
@@ -339,7 +339,7 @@ export default function DataTableHeaderCell<T>({
         ) : null}
         {filter ? <DataTableHeaderCellFilter isActive={!!filtering}>{filter}</DataTableHeaderCellFilter> : null}
       </Group>
-      {resizable ? <DataTableResizableHeaderKnob accessor={accessor as string} columnRef={columnRef} /> : null}
+      {resizable ? <DataTableResizableHeaderHandle accessor={accessor as string} columnRef={columnRef} /> : null}
     </Box>
   );
 }

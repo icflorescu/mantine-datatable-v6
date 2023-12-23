@@ -1,6 +1,6 @@
 import { IconColumnRemove, IconColumns1 } from '@tabler/icons-react';
 import sortBy from 'lodash/sortBy';
-import { DataTable, DataTableSortStatus, useDragToggleColumns } from 'mantine-datatable';
+import { DataTable, DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
 import { useEffect, useState } from 'react';
 import { companies, type Company } from '~/data';
 
@@ -19,12 +19,12 @@ export default function DraggingTogglingComplexExample() {
     setRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
   }, [sortStatus]);
 
-  const { effectiveColumns, resetColumnsOrder, resetColumnsToggle } = useDragToggleColumns({
+  const { effectiveColumns, resetColumnsOrder, resetColumnsToggle } = useDataTableColumns({
     key,
     columns: [
       { accessor: 'name', width: '40%', toggleable: true, draggable: true, sortable: true },
       { accessor: 'streetAddress', width: '60%', toggleable: true, draggable: true },
-      { accessor: 'city', width: 160, toggleable: true, draggable: true },
+      { accessor: 'city', width: 160, ellipsis: true, toggleable: true, draggable: true },
       { accessor: 'state' },
     ],
   });

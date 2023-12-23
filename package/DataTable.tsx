@@ -32,7 +32,7 @@ import DataTableRowMenuDivider from './DataTableRowMenuDivider';
 import DataTableRowMenuItem from './DataTableRowMenuItem';
 import DataTableScrollArea from './DataTableScrollArea';
 import {
-  useDragToggleColumns,
+  useDataTableColumns,
   useElementOuterSize,
   useLastSelectionChangeIndex,
   useRowContextMenu,
@@ -261,7 +261,7 @@ export default function DataTable<T>({
     return groups?.flatMap((group) => group.columns) ?? columns!;
   }, [columns, groups]);
 
-  const dragToggle = useDragToggleColumns({
+  const dragToggle = useDataTableColumns({
     key: storeColumnsKey,
     columns: effectiveColumns,
   });

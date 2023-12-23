@@ -42,7 +42,7 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
             add a <Code>draggable: true</Code> property to each Dragging candidate column;
           </li>
           <li>
-            use <Code>useDragToggleColumns()</Code> hook to get the sorted columns.
+            use the <Code>useDataTableColumns()</Code> hook to get the sorted columns.
           </li>
         </ul>
       </PageText>
@@ -65,7 +65,7 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
             add a <Code>toggleable: true</Code> property to each Toggling candidate column;
           </li>
           <li>
-            use <Code>useDragToggleColumns()</Code> hook to get the sorted columns.
+            use the <Code>useDataTableColumns()</Code> hook to get the sorted columns.
           </li>
         </ul>
       </PageText>

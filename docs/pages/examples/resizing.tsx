@@ -39,7 +39,7 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
             add a <Code>resizable: true</Code> property to each <strong>resizing candidate</strong> column;
           </li>
           <li>
-            use <Code>useDragToggleColumns()</Code> hook to get the effective columns.
+            use the <Code>useDataTableColumns()</Code> hook to get the effective columns.
           </li>
         </ul>
       </PageText>

@@ -1,6 +1,7 @@
 import { Button, Group, Stack, Switch } from '@mantine/core';
-import { DataTable, useDragToggleColumns } from 'mantine-datatable';
-import { useState } from 'react';
+import { sortBy } from 'lodash';
+import { DataTable, DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
+import { useEffect, useState } from 'react';
 import { companies, type Company } from '~/data';
 
 export default function ResizingComplexExample() {
@@ -17,7 +18,7 @@ export default function ResizingComplexExample() {
     draggable: true,
   };
 
-  const { effectiveColumns, resetColumnsWidth, resetColumnsOrder, resetColumnsToggle } = useDragToggleColumns<Company>({
+  const { effectiveColumns, resetColumnsWidth, resetColumnsOrder, resetColumnsToggle } = useDataTableColumns<Company>({
     key,
     columns: [
       { accessor: 'name', ...props },
@@ -27,14 +28,28 @@ export default function ResizingComplexExample() {
     ],
   });
 
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+    columnAccessor: 'name',
+    direction: 'asc',
+  });
+
+  const [records, setRecords] = useState(sortBy(companies, 'name'));
+
+  useEffect(() => {
+    const data = sortBy(companies, sortStatus.columnAccessor) as Company[];
+    setRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
+  }, [sortStatus]);
+
   return (
     <Stack>
       <DataTable
         withBorder={withTableBorder}
         withColumnBorders={withColumnBorders}
         storeColumnsKey={key}
-        records={companies}
+        records={records}
         columns={effectiveColumns}
+        sortStatus={sortStatus}
+        onSortStatusChange={setSortStatus}
       />
       <Group grow position="apart">
         <Group position="left">

@@ -2,25 +2,41 @@ import { createStyles, getStylesRef } from '@mantine/core';
 import { MutableRefObject, useRef, useState } from 'react';
 import { useDataTableDragToggleColumnsContext } from './DataTableDragToggleColumns.context';
 
-type DataTableResizableHeaderCellProps = {
+type DataTableResizableHeaderHandleProps = {
   accessor: string;
   columnRef: MutableRefObject<HTMLTableCellElement | null>;
 };
 
 const useStyles = createStyles((theme) => ({
-  resizableColumnHeaderKnob: {
-    ref: getStylesRef('resizableColumnHeaderKnob'),
+  resizableColumnHeaderHandle: {
+    ref: getStylesRef('resizableColumnHeaderHandle'),
     position: 'absolute',
     cursor: 'col-resize',
-    top: '1px',
-    bottom: '1px',
-    width: '2px',
+    top: 0,
+    bottom: 0,
+    width: '7px',
+    transform: 'translateX(4px)',
     zIndex: 1,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[3],
+    '::after': {
+      content: '""',
+      position: 'absolute',
+      top: '1px',
+      left: '2px',
+      bottom: '1px',
+      background: 'inherit',
+      borderLeft: `3px dotted ${theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[3]}`,
+      opacity: 0,
+    },
+    '&:hover::after': {
+      borderLeftColor: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 6 : 4],
+    },
+    'tr:hover &::after': {
+      opacity: 1,
+    },
   },
 }));
 
-export const DataTableResizableHeaderKnob = (props: DataTableResizableHeaderCellProps) => {
+export const DataTableResizableHeaderHandle = (props: DataTableResizableHeaderHandleProps) => {
   const { accessor, columnRef } = props;
 
   const { classes } = useStyles();
@@ -90,9 +106,10 @@ export const DataTableResizableHeaderKnob = (props: DataTableResizableHeaderCell
   return (
     <div
       ref={dragRef}
+      onClick={(event) => event.stopPropagation()}
       onMouseDown={handleDragStart}
       onDoubleClick={handleDoubleClick}
-      className={classes.resizableColumnHeaderKnob}
+      className={classes.resizableColumnHeaderHandle}
       style={{
         right: deltaX,
       }}

@@ -116,7 +116,7 @@ export type DataTableColumnToggle = {
 
 type DataTableColumnWidth = Record<string, string | number>;
 
-export const useDragToggleColumns = <T>({
+export const useDataTableColumns = <T>({
   key,
   columns = [],
 }: {
