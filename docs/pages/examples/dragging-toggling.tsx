@@ -53,6 +53,12 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
 
       <PageSubtitle value="Toggling" />
 
+      <PageText>
+        In the below example you can toggle the first 3 columns. The last column is not toggleable and will always be
+        visible. The first column is toggled off by default. Click with right mouse button on the header to select the
+        columns you want to toggle.
+      </PageText>
+
       <TogglingExample />
 
       <PageText>
@@ -71,6 +77,11 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
       </PageText>
 
       <CodeBlock language="typescript" content={code['toggling']} />
+
+      <PageText info>
+        You may define which columns will be toggled by default by setting the <Code>defaultToggle: false</Code>{' '}
+        property
+      </PageText>
 
       <PageSubtitle value="Dragging & Toggling with context menu Reset" />
       <DraggingTogglingResetExample />

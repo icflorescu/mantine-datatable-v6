@@ -65,9 +65,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: package
-      - uses: JS-DevTools/npm-publish@v2
+      - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
+          tag: v6
 
   # Pages deployment job
   deploy:

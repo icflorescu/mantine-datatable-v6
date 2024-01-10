@@ -85,7 +85,7 @@ export const DataTableResizableHeaderHandle = (props: DataTableResizableHeaderHa
 
     setColumnWidth(accessor, columnRef.current.style.width as string);
 
-    columnRef.current.style.width = '';
+    columnRef.current.style.width = 'initial';
 
     setDeltaX(0);
   };
