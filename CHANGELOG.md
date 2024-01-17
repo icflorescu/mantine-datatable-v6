@@ -3,6 +3,11 @@
 The following is a list of notable changes to the Mantine DataTable component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
+## 6.0.8 (2024-01-17)
+
+- Fix unhandled runtime error when using column dragging/toggling (PR [#14](https://github.com/icflorescu/mantine-datatable-v6/pull/14))
+- Update dev deps
+
 ## 6.0.7 (2024-01-10)
 
 - Fix default toggling and double click on column to reset the width (see PR [#11](https://github.com/icflorescu/mantine-datatable-v6/pull/11) by [Giovambattista Fazioli](https://github.com/gfazioli))
