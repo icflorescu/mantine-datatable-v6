@@ -1,4 +1,5 @@
 import { Button, Group, Stack } from '@mantine/core';
+import { IconMap } from '@tabler/icons-react';
 import { DataTable, useDataTableColumns } from 'mantine-datatable';
 import { companies } from '~/data';
 
@@ -11,7 +12,11 @@ export default function TogglingExample() {
       { accessor: 'name', width: '40%', toggleable: true, defaultToggle: false },
       { accessor: 'streetAddress', width: '60%', toggleable: true },
       { accessor: 'city', width: 160, toggleable: true },
-      { accessor: 'state' },
+      {
+        accessor: 'state',
+        width: 40,
+        title: <IconMap />,
+      },
     ],
   });
 

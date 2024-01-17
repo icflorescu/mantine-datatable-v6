@@ -109,7 +109,6 @@ export function useElementOuterSize<T extends HTMLElement>() {
 
 export type DataTableColumnToggle = {
   accessor: string;
-  title: string | undefined;
   defaultToggle: boolean;
   toggleable: boolean;
   toggled: boolean;
@@ -137,7 +136,6 @@ export const useDataTableColumns = <T>({
     columns.map((column) => ({
       accessor: column.accessor,
       defaultToggle: column.defaultToggle || true,
-      title: column.title,
       toggleable: column.toggleable,
       toggled: column.defaultToggle === undefined ? true : column.defaultToggle,
     }));
