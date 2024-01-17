@@ -36,7 +36,7 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
         In order to enable Dragging you’ll have to:
         <ul>
           <li>
-            add a <Code>storeColumnsKey: your_key</Code> property to the DataTable;
+            add a <Code>storeColumnsKey: &apos;your_key&apos;</Code> property to the DataTable;
           </li>
           <li>
             add a <Code>draggable: true</Code> property to each Dragging candidate column;
@@ -65,7 +65,7 @@ export default function Page({ code }: InferGetStaticPropsType<typeof getStaticP
         In order to enable Toggling you’ll have to:
         <ul>
           <li>
-            add a <Code>storeColumnsKey: your_key</Code> property to the DataTable;
+            add a <Code>storeColumnsKey: &apos;your_key&apos;</Code> property to the DataTable;
           </li>
           <li>
             add a <Code>toggleable: true</Code> property to each Toggling candidate column;
